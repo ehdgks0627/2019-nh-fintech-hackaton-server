@@ -7,6 +7,7 @@ const productRoute = require('./controllers/productController/productRouter');
 const nutrientRoute = require('./controllers/test/nutrientInserter');
 const bodyParser = require('body-parser');
 const expressSession = require('express-session');
+const mongoose = require('mongoose');
 
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
@@ -25,6 +26,16 @@ app.use(express.static('/productPhoto/'));
 app.use('/user', userRoute);
 app.use('/product', productRoute);
 app.use('/nutrient', nutrientRoute);
+
+var User = mongoose.model('UserSchema', db.UserSchema);
+var Product = mongoose.model('ProductSchema', db.ProductSchema);
+var Cart = mongoose.model('CartSchema', db.CartSchema);
+var Nutrient = mongoose.model('NutrientSchema', db.NutrientSchema);
+
+User.collection.remove();
+Product.collection.remove();
+Cart.collection.remove();
+Nutrient.collection.remove();
 
 app.listen(80, () => {
   console.log('Express App on port 80!');
