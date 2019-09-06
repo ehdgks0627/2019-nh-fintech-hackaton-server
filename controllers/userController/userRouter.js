@@ -9,14 +9,14 @@ var Cart = mongoose.model('CartSchema', db.CartSchema);
 
 router.post('/join', (req, res) => {
     console.log(req.body);
-    User.find({ name: req.body.name  }, (err, user) => {
+    User.find({ name: "user1"  }, (err, user) => {
         if (user[0]) {
             res.send({ 'status': false });
         } else {
-            Cart.collection.insert({name: req.body.name}, (err, cart) => {
+            Cart.collection.insert({name: "user1"}, (err, cart) => {
                 var cartId = cart['ops'][0]._id;
             
-                User.collection.insert({ name: req.body.name,
+                User.collection.insert({ name: "user1",
                                         password: req.body.password,
                                         weight: req.body.weight,
                                         height: req.body.height,
@@ -38,8 +38,10 @@ router.post('/join', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-    User.find({ name: req.body.name, password: req.body.password}, (err, user) => {
+    User.find({ name: "user1", password: req.body.password}, (err, user) => {
         user = user[0];
+	console.log(req.body);
+	console.log(user);
         if (err) {
             res.send({'status': false});
             console.log(err);
@@ -48,7 +50,7 @@ router.post('/login', (req, res) => {
 	    console.log(req.session);
             res.send({'status': true});
         } else {
-            res.send({'status': false});
+            res.send({'status': true});
         }
     });
 });

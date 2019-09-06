@@ -15,7 +15,7 @@ var Nutrient = mongoose.model('NutrientSchema', db.NutrientSchema);
 router.post('/', function (req, res) {
     console.log(req.body);
 
-    if(!req.session.name){
+    if(!"user1"){
         res.send({'status': false});
         console.log("no session");
         return ;
@@ -25,7 +25,7 @@ router.post('/', function (req, res) {
     Nutrient.collection.findOne({name: req.body.product_category}, (err, nutrient) =>{
         console.log(nutrient)
         if(nutrient){
-            User.find({ name: req.session.name }, (err, user) => { 
+            User.find({ name: "user1" }, (err, user) => { 
                 if(!user){ res.send({'status':false}); return ;}
                 console.log(nutrient);
                 Product.collection.insert({ nutrient_id: nutrient._id,
@@ -60,7 +60,7 @@ router.get('/test', (req, res) => {
 });
 
 router.get('/:type', (req, res) => {
-    if(!req.session.name){
+    if(!"user1"){
         Product.find({}, (err, product) => {
             if(err){ res.send( {'status':false} ); }
             res.send({ 'status': true, 'data': product });
@@ -68,17 +68,18 @@ router.get('/:type', (req, res) => {
         return ;
     }
 
-    User.find({ name: req.session.name }, (err, user) => { 
+    User.find({ name: "user1" }, (err, user) => { 
         if(!user){ res.send( {'status':false} ); return ;}
 
         if(req.params.type === "fit"){
 	    console.log(req.params.type);
-		console.log(user[0]);
+		console.log(user[0], "test");
             Product.find({product_filter: {$lte: user[0].food_value}}, (err, product) => {
 		console.log(err);
 		console.log(product);
                 if(!product){ res.send( {'status':false} ); return ;}
                 res.send({ 'status': true, 'data': product });
+		console.log("test!!!!!");
             });
         }else{
             Product.find({}, (err, product) => {
@@ -91,7 +92,7 @@ router.get('/:type', (req, res) => {
 
 router.get('/detail/:id', (req, res) => {
    console.log(req.params);
-//   if(!req.session.name){
+//   if(!"user1"){
 //        Product.find({}, (err, product) => {
 //            if(err){ res.send( {'status':false} ); }
 //            res.send({ 'status': true, 'data': product });
@@ -99,7 +100,7 @@ router.get('/detail/:id', (req, res) => {
 //        return ;
 //    }
 
-    User.find({ name: req.session.name }, (err, user) => { 
+    User.find({ name: "user1" }, (err, user) => { 
         //if(!user){ res.send( {'status':false} ); return ;}
 
         if(req.params.id){
