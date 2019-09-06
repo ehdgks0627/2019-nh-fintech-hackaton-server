@@ -5,6 +5,7 @@ const db = require('../../database/model.js');
 const mongoose = require('mongoose');
 
 var User = mongoose.model('UserSchema', db.UserSchema);
+var Cart = mongoose.model('CartSchema', db.CartSchema);
 
 router.post('/join', (req, res) => {
     console.log(req.body);
@@ -12,19 +13,25 @@ router.post('/join', (req, res) => {
         if (user[0]) {
             res.send({ 'status': false });
         } else {
-            User.collection.insert({ name: req.body.name,
-                                    password: req.body.password,
-                                    weight: req.body.weight,
-                                    height: req.body.height,
-                                    gender: req.body.gender,
-                                    age: req.body.age,
-                                    food_value: req.body.food_value }, (err, user) => {
-                if (!err) {
-                    res.send({ 'status': true });
-                } else {
-                    res.send({ 'status': false });
-                    console.log(err);
-                }
+            Cart.collection.insert({name: req.body.name}, (err, cart) => {
+                var cartId = cart['ops'][0]._id;
+            
+                User.collection.insert({ name: req.body.name,
+                                        password: req.body.password,
+                                        weight: req.body.weight,
+                                        height: req.body.height,
+                                        gender: req.body.gender,
+                                        age: req.body.age,
+                                        food_value: req.body.foodValue,
+                                        cart_id: cartId
+                                    }, (err, user) => {
+                    if (!err) {
+                        res.send({ 'status': true });
+                    } else {
+                        res.send({ 'status': false });
+                        console.log(err);
+                    }
+                });
             });
         }
     });
@@ -53,9 +60,25 @@ router.get('/', (req, res) => {
     } else {
         User.find({ name: session }, (err, user) => {
             user = user[0];
-            res.send({'status': true, 'data':{'_id': user._id, 'name': user.name, 'weight': user.weight, 'height': user.height, 'gender': user.gender, 'age': user.age, 'foodValue': user.food_value}});
+            res.send({'status': true, 'data':{'_id': user._id, 'name': user.name, 'weight': user.weight, 'height': user.height, 'gender': user.gender, 'age': user.age, 'foodValue': user.food_value, 'cartId': user.cart_id}});
         });
     }
+});
+
+router.put('/', (req, res) => {
+    session = req.session.name;
+    if (session === undefined) {
+        res.send({ 'status': false });
+    } else {
+        User.update({ name: session }, {$set: {'food_value': req.body.food_value}}, (err, user) => {
+            if(err){
+                res.send({'status': false});
+                console.log("update error");
+            }else{
+                res.send({'status': true});
+            }            
+        });
+    }  
 });
 
 

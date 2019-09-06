@@ -23,7 +23,7 @@ router.post('/', function (req, res) {
 
     console.log(match);
     Nutrient.collection.findOne({product_name: match}, (err, nutrient) =>{
-        if(nutrient || !nutrient){
+        if(nutrient){
             User.find({ name: req.session.name }, (err, user) => { 
                 if(!user){ res.send({'status':false}); return ;}
         
@@ -46,6 +46,7 @@ router.post('/', function (req, res) {
             });
         }else{
             res.send({ 'status': false });
+            console.log("no nutrient");
         }
     });
 
