@@ -29,13 +29,7 @@ exports.ProductSchema = new Schema({
 exports.CartSchema = new Schema({
     _id: Schema.Types.ObjectId,
     name: String,
-    item_id: [String],
-});
-
-exports.ItemSchema = new Schema({
-    _id: Schema.Types.ObjectId,
-    product_id: String,
-    item_qty: Number,
+    product_id: [String],
 });
 
 exports.OrderSchema = new Schema({

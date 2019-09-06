@@ -5,6 +5,7 @@ const db = require('./database/db.js');
 const userRoute = require('./controllers/userController/userRouter');
 const productRoute = require('./controllers/productController/productRouter');
 const nutrientRoute = require('./controllers/test/nutrientInserter');
+const cartRoute = require('./controllers/orderController/cartRouter');
 const bodyParser = require('body-parser');
 const expressSession = require('express-session');
 const mongoose = require('mongoose');
@@ -26,14 +27,15 @@ app.use(express.static('/productPhoto/'));
 app.use('/user', userRoute);
 app.use('/product', productRoute);
 app.use('/nutrient', nutrientRoute);
+app.use('/cart', cartRoute);
 
-//var User = mongoose.model('UserSchema', db.UserSchema);
-//var Product = mongoose.model('ProductSchema', db.ProductSchema);
+var User = mongoose.model('UserSchema', db.UserSchema);
+var Product = mongoose.model('ProductSchema', db.ProductSchema);
 var Cart = mongoose.model('CartSchema', db.CartSchema);
 
 //User.collection.remove();
 //Product.collection.remove();
-Cart.collection.remove();
+//Cart.collection.remove();
 
 app.listen(80, () => {
   console.log('Express App on port 80!');

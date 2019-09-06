@@ -21,7 +21,7 @@ router.post('/', function (req, res) {
         return ;
     }
 
-
+    
     Nutrient.collection.findOne({name: req.body.product_category}, (err, nutrient) =>{
         console.log(nutrient)
         if(nutrient){
@@ -34,7 +34,7 @@ router.post('/', function (req, res) {
                                         product_price: req.body.product_price,
                                         product_photo: req.body.product_photo,
                                         product_content: req.body.product_content,
-                                        product_filter: req.body.product_filter,
+                                        product_filter: parseInt(req.body.product_filter),
                                         product_seller: user[0].name,
                                     }, (err, user) => {
                     if (!err) {
@@ -72,8 +72,12 @@ router.get('/:type', (req, res) => {
         if(!user){ res.send( {'status':false} ); return ;}
 
         if(req.params.type === "fit"){
-            Product.find({ product_filter: { $lt: user[0].foodValue }}, (err, product) => {
-                if(err){ res.send( {'status':false} ); return ;}
+	    console.log(req.params.type);
+		console.log(user[0]);
+            Product.find({product_filter: {$lte: user[0].food_value}}, (err, product) => {
+		console.log(err);
+		console.log(product);
+                if(!product){ res.send( {'status':false} ); return ;}
                 res.send({ 'status': true, 'data': product });
             });
         }else{
@@ -87,16 +91,16 @@ router.get('/:type', (req, res) => {
 
 router.get('/detail/:id', (req, res) => {
    console.log(req.params);
-   if(!req.session.name){
-        Product.find({}, (err, product) => {
-            if(err){ res.send( {'status':false} ); }
-            res.send({ 'status': true, 'data': product });
-        });
-        return ;
-    }
+//   if(!req.session.name){
+//        Product.find({}, (err, product) => {
+//            if(err){ res.send( {'status':false} ); }
+//            res.send({ 'status': true, 'data': product });
+//        });
+//        return ;
+//    }
 
     User.find({ name: req.session.name }, (err, user) => { 
-        if(!user){ res.send( {'status':false} ); return ;}
+        //if(!user){ res.send( {'status':false} ); return ;}
 
         if(req.params.id){
             Product.find({_id: req.params.id}, (err, product) => {
