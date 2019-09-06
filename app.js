@@ -32,10 +32,13 @@ app.use('/cart', cartRoute);
 var User = mongoose.model('UserSchema', db.UserSchema);
 var Product = mongoose.model('ProductSchema', db.ProductSchema);
 var Cart = mongoose.model('CartSchema', db.CartSchema);
+var Order = mongoose.model('OrderSchema', db.OrderSchema);
+
 
 //User.collection.remove();
 //Product.collection.remove();
 //Cart.collection.remove();
+//Order.collection.remove();
 
 app.listen(80, () => {
   console.log('Express App on port 80!');

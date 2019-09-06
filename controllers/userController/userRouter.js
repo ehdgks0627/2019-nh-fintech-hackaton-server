@@ -63,7 +63,7 @@ router.get('/', (req, res) => {
     } else {
         User.find({ name: session }, (err, user) => {
             user = user[0];
-            res.send({'status': true, 'data':{'_id': user._id, 'name': user.name, 'weight': user.weight, 'height': user.height, 'gender': user.gender, 'age': user.age, 'foodValue': user.food_value, 'cartId': user.cart_id}});
+            res.send({'status': true, 'data':{'_id': user._id, 'name': user.name, 'weight': user.weight, 'height': user.height, 'gender': user.gender, 'age': user.age, 'foodValue': user.food_value, 'cartId': user.cart_id, 'orders':user.order_id}});
         });
     }
 });

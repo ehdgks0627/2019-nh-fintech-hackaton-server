@@ -55,7 +55,7 @@ router.post('/', function (req, res) {
 
 router.get('/test', (req, res) => {
 	Nutrient.find({}, (err, nutrients) => {
-	    console.log('test',nutrients);
+	    res.send(nutrients);
 	});
 });
 

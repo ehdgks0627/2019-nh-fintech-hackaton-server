@@ -34,7 +34,7 @@ exports.CartSchema = new Schema({
 
 exports.OrderSchema = new Schema({
     _id: Schema.Types.ObjectId,
-    order_status: Number,
+    order_status: String,
     cart_id: String,
     order_timestamp: { type: Date, default: Date.now },
 })
