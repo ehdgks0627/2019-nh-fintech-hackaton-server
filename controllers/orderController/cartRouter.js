@@ -42,9 +42,18 @@ router.get('/', function (req, res) {
 
     User.findOne({name: "user1"}, (err, user) => {
         if(!user){ res.send({'status': false}); return; }
-        console.log(user);
         Cart.find({_id: user.cart_id}, (err, cart) => {
-            res.send({'status': true, 'data': cart});
+            var products = cart[0].product_id
+            var result = []
+            for(var i=0; i<products.length; i++) {
+                console.log(products[i]);
+                Product.findOne({product_id: products[i]._id}, (err, product) => {
+                    result.push(product)
+                    if (result.length == products.length) {
+                        res.send({'status': true, 'data': result});
+                    }
+                })
+            }
         });
     });
 });
@@ -66,14 +75,13 @@ router.delete('/', function (req, res) {
         if(!user){ res.send({'status': false}); return; }
 
     Cart.find({name: "user1"}, (err, cart) => {
-        Cart.insert({name: "user1"}, (err, new_cart) => {
-            console.log(new_cart);
-            User.update({name: "user1", {$set: {cart_id: new_cart.cart_id } }, (err, user) => {
-                    Order.insert({order_state: 0, cart_id: cart._id}, (err, order) => {
+        Cart.collection.insert({name: "user1"}, (err, new_cart) => {
+            User.update({name: "user1"}, {$set: {cart_id: new_cart.ops[0]._id } }, (err, user) => {
+                cart = cart[0]
+                    Order.collection.insert({order_state: 0, cart_id: cart._id}, (err, order) => {
                         if(!order) { res.send({'status': false}); return ; }
                         res.send({'status': true});
-                        console.log(order);
-                        return ;
+                        return;
                     });
                 });
             });
