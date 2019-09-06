@@ -46,15 +46,18 @@ exports.NutrientSchema = new Schema({
     code: String, // 식품 코드
     category: String, // 식품군
     name: String, // 이름
-    Eng: Number, // 열량, kcal
-    Car: Number, // 탄수화물, g
-    Pro: Number, // 단백질, g
-    Fat: Number, // 지방, g
-    Tsg: Number, // 당류, g
-    Na: Number, // 나트륨, mg
-    CHOLE: Number, // 콜레스테롤, mg
-    SFA: Number, // 포화지방산, g
-    TFA: Number, // 트랜스지방산, g
+    /*
+    0: 열량 (kcal)
+    1: 탄수화물 (g)
+    2: 단백질 (g)
+    3: 지방 (g)
+    4: 당류 (g)
+    5: 나트륨 (mg)
+    6: 콜레스테롤 (mg)
+    7: 포화지방산 (g)
+    8: 트랜스지방산 (g)
+    */
+    nutrient_info: [Number],
     name_english: String, // 영문 이름
     origin: String, // 원산지
 });
