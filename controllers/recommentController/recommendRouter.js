@@ -9,7 +9,7 @@ const Cart = mongoose.model('CartSchema', db.CartSchema);
 const Nutrient = mongoose.model('NutrientSchema', db.NutrientSchema);
 const Order = mongoose.model('OrderSchema', db.OrderSchema);
 
-router.get('/recommend', async (req, res) => {
+router.get('/', async (req, res) => {
     const userid = "user1";
 
     try {
@@ -61,3 +61,4 @@ router.get('/recommend', async (req, res) => {
     }
 });
 
+module.exports = router;
