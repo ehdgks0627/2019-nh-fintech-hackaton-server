@@ -10,8 +10,8 @@ exports.UserSchema = new Schema({
     gender: Boolean,
     age: Number,
     food_value: Number,
-    cart_id: Number,
-    order_id: [Number],
+    cart_id: String,
+    order_id: [String],
 });
 
 exports.ProductSchema = new Schema({
@@ -28,12 +28,12 @@ exports.ProductSchema = new Schema({
 
 exports.CartSchema = new Schema({
     cart_id: Schema.Types.ObjectId,
-    item_id: [Number],
+    item_id: [String],
 });
 
 exports.ItemSchema = new Schema({
     item_id: Schema.Types.ObjectId,
-    product_id: Number,
+    product_id: String,
     item_qty: Number,
 });
 
