@@ -11,7 +11,8 @@ app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:500
 db();
 
 app.use( expressSession ( {
-	secret : 'nhMarket',
+    key: 'NHMARKET_SID',
+    secret: 'f={/jBwJ:#.euKSyxFb9eF{mwQaYR6',
 	saveUninitialized: true,
 	resave: false,
 	cookie: {expire: new Date(Date.now+60*60), singed: true} 
@@ -22,5 +23,5 @@ app.use(express.static('/productPhoto/'));
 app.use('/user', userRoute);
 
 app.listen(80, () => {
-  console.log('Express App on port 9949!');
+  console.log('Express App on port 80!');
 });

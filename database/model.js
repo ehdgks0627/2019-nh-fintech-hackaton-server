@@ -9,6 +9,7 @@ exports.UserSchema = new Schema({
     height: Number,
     gender: Boolean,
     age: Number,
+    food_value: Number,
     cart_id: Number,
     order_id: [Number],
 });
