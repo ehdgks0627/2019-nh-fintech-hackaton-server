@@ -22,7 +22,7 @@ router.post('/', function (req, res) {
     }
 
 
-    Nutrient.collection.findOne({product_name: req.body.product_category}, (err, nutrient) =>{
+    Nutrient.collection.findOne({product_name: req.body.product_car}, (err, nutrient) =>{
         if(nutrient){
             User.find({ name: req.session.name }, (err, user) => { 
                 if(!user){ res.send({'status':false}); return ;}
