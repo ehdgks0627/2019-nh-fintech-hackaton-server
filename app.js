@@ -27,15 +27,13 @@ app.use('/user', userRoute);
 app.use('/product', productRoute);
 app.use('/nutrient', nutrientRoute);
 
-var User = mongoose.model('UserSchema', db.UserSchema);
-var Product = mongoose.model('ProductSchema', db.ProductSchema);
+//var User = mongoose.model('UserSchema', db.UserSchema);
+//var Product = mongoose.model('ProductSchema', db.ProductSchema);
 var Cart = mongoose.model('CartSchema', db.CartSchema);
-var Nutrient = mongoose.model('NutrientSchema', db.NutrientSchema);
 
-User.collection.remove();
-Product.collection.remove();
+//User.collection.remove();
+//Product.collection.remove();
 Cart.collection.remove();
-Nutrient.collection.remove();
 
 app.listen(80, () => {
   console.log('Express App on port 80!');

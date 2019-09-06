@@ -22,13 +22,13 @@ router.post('/', function (req, res) {
     }
 
 
-    Nutrient.collection.findOne({product_name: req.body.product_category}, (err, nutrient) =>{
+    Nutrient.collection.findOne({name: req.body.product_category}, (err, nutrient) =>{
         console.log(nutrient)
         if(nutrient){
             User.find({ name: req.session.name }, (err, user) => { 
                 if(!user){ res.send({'status':false}); return ;}
                 console.log(nutrient);
-                Product.collection.insert({ nutrient_id: nutrient[0].nutrient_id,
+                Product.collection.insert({ nutrient_id: nutrient._id,
                                         product_name: req.body.product_name,
                                         product_category: req.body.product_category,
                                         product_price: req.body.product_price,
@@ -53,6 +53,11 @@ router.post('/', function (req, res) {
 
 });
 
+router.get('/test', (req, res) => {
+	Nutrient.find({}, (err, nutrients) => {
+	    console.log('test',nutrients);
+	});
+});
 
 router.get('/:type', (req, res) => {
     if(!req.session.name){
@@ -81,7 +86,8 @@ router.get('/:type', (req, res) => {
 });
 
 router.get('/detail/:id', (req, res) => {
-    if(!req.session.name){
+   console.log(req.params);
+   if(!req.session.name){
         Product.find({}, (err, product) => {
             if(err){ res.send( {'status':false} ); }
             res.send({ 'status': true, 'data': product });
@@ -93,18 +99,24 @@ router.get('/detail/:id', (req, res) => {
         if(!user){ res.send( {'status':false} ); return ;}
 
         if(req.params.id){
-            Product.find({product_id: req.params.id}, (err, product) => {
+            Product.find({_id: req.params.id}, (err, product) => {
                 if(err){ res.send( {'status':false} ); return ;}
-                Nutrient.collection.findOne({nutrient_id: product[0].nutrient_id}, (err, nutrient) =>{
-                    res.send({'status':true, 'data':{'product': product[0], 'nutrient': nutrient}});addasdsakm
+                Nutrient.findOne({_id: product[0].nutrient_id}, (err, nutrient) =>{
+		console.log('test',nutrient);
+		    if(nutrient){
+                    	res.send({'status':true, 'data':{'product': product[0], 'nutrient': nutrient}});
+		    }else{
+		    	res.send({'status': false});
+		    }
+		    return; 
                 });
-                res.send({ 'status': true, 'data': product });
             });
         }else{
             res.send({'status': false});
         }
     });
 });
+
 
 
 
