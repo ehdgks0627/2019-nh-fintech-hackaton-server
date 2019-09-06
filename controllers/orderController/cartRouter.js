@@ -41,14 +41,30 @@ router.get('/', function (req, res) {
         if(!user){ res.send({'status': false}); return; }
 
         Cart.find({name: req.session.name}, (err, cart) => {
-            console.log(cart);
-	    res.send(cart);
+            res.send({'status': true, 'data': cart});
         });
     });
 });
 
 
+router.delete('/', function (req, res) {
+    if(!req.session.name){
+        res.send({'status': false});
+        console.log("no session");
+        return ;
+    }
 
+    User.findOne({name: req.session.name}, (err, user) => {
+        if(!user){ res.send({'status': false}); return; }
+
+	Cart.find({name: req.session.name}, (err, cart) => {
+	    Cart.update({_id: user.cart_id}, {$pullAll : { product_id: [req.body.product_id]}}, (err, cart) => {
+	        res.send({'status': true, 'data': cart});
+	    });
+        });
+
+    });
+});
 
 
 module.exports = router;

@@ -45,6 +45,7 @@ router.post('/login', (req, res) => {
             console.log(err);
         } else if (user) {
             req.session.name = user.name;
+	    console.log(req.session);
             res.send({'status': true});
         } else {
             res.send({'status': false});
