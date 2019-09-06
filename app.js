@@ -2,7 +2,9 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const db = require('./database/db.js'); 
-const userRoute = require('./controllers/userController/userRouter.js');
+const userRoute = require('./controllers/userController/userRouter');
+const productRoute = require('./controllers/productController/productRouter');
+const nutrientRoute = require('./controllers/test/nutrientInserter');
 const bodyParser = require('body-parser');
 const expressSession = require('express-session');
 
@@ -21,6 +23,8 @@ app.use( expressSession ( {
 app.use(express.static('/productPhoto/'));
 	
 app.use('/user', userRoute);
+app.use('/product', productRoute);
+app.use('/nutrient', nutrientRoute);
 
 app.listen(80, () => {
   console.log('Express App on port 80!');

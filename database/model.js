@@ -15,35 +15,37 @@ exports.UserSchema = new Schema({
 });
 
 exports.ProductSchema = new Schema({
-    product_id: Number,
-    nutrient_id: Number,
+    product_id: Schema.Types.ObjectId,
+    nutrient_id: Schema.Types.ObjectId,
     product_name: String,
+    product_category: String,
     product_price: Number,
     product_photo: String,
     product_content: String,
     product_filter: Number,
+    product_seller: String,
 });
 
 exports.CartSchema = new Schema({
-    cart_id: Number,
+    cart_id: Schema.Types.ObjectId,
     item_id: [Number],
 });
 
 exports.ItemSchema = new Schema({
-    item_id: Number,
+    item_id: Schema.Types.ObjectId,
     product_id: Number,
     item_qty: Number,
 });
 
 exports.OrderSchema = new Schema({
-    order_id: Number,
+    order_id: Schema.Types.ObjectId,
     order_status: Number,
     cart_id: Number,
     order_timestamp: { type: Date, default: Date.now },
 })
 
 exports.NutrientSchema = new Schema({
-    nutrient_id: Number,
+    nutrient_id: Schema.Types.ObjectId,
     code: String, // 식품 코드
     category: String, // 식품군
     name: String, // 이름
