@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 
     try {
         const user = await User.findOne({ name: userid });
-        const cart = await Cart.findOne({ _id: user.cartid });
+        const cart = await Cart.findOne({ _id: user.cart_id });
         if (!cart.product_id) {
             res.status(404).send();
             return;
