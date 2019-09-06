@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
             data: [
                 {
                     status: summaryNutInfo[0],
-                    recommend: await Product.findOne({ product_category: "감자" })
+                    recommend: await Product.findOne({ product_category: "쌀" })
                 },
                 {
                     status: summaryNutInfo[1],
