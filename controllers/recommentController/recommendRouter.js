@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
     try {
         const user = await User.findOne({ name: userid });
         const cart = await Cart.findOne({ _id: user.cartid });
+        console.log(JSON.stringify(cart, null, 2));
         const productIdList = cart.product_id;
 
         const summaryNutInfo = [0, 0, 0, 0, 0];
