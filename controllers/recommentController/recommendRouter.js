@@ -15,13 +15,11 @@ router.get('/', async (req, res) => {
     try {
         const user = await User.findOne({ name: userid });
         const cart = await Cart.findOne({ _id: user.cartid });
-        const productIdList = cart.product_id;
-
-        if (!productIdList) {
+        if (!cart.product_id) {
             res.status(404).send();
             return;
         }
-
+        const productIdList = cart.product_id;
         const summaryNutInfo = [0, 0, 0, 0, 0];
 
         for (const productId of productIdList) {
