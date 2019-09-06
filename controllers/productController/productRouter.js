@@ -26,7 +26,7 @@ router.post('/', function (req, res) {
         if(nutrient){
             User.find({ name: req.session.name }, (err, user) => { 
                 if(!user){ res.send({'status':false}); return ;}
-        
+                console.log(nutrient);
                 Product.collection.insert({ nutrient_id: nutrient[0].nutrient_id,
                                         product_name: req.body.product_name,
                                         product_category: req.body.product_category,
