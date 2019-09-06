@@ -16,7 +16,7 @@ exports.UserSchema = new Schema({
 
 exports.ProductSchema = new Schema({
     product_id: Schema.Types.ObjectId,
-    nutrient_id: Schema.Types.ObjectId,
+    nutrient_id: String,
     product_name: String,
     product_category: String,
     product_price: Number,
