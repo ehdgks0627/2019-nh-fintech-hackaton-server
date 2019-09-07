@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
             return;
         }
         const productIdList = cart.product_id;
-        const summaryNutInfo = [0, 0, 0, 0, 0];
+        let summaryNutInfo = [0, 0, 0, 0, 0];
 
         for (const productId of productIdList) {
             const product = await Product.findOne({ _id: productId });
@@ -28,11 +28,13 @@ router.get('/', async (req, res) => {
             const nutrient = await Nutrient.findOne({ _id: nutrientId });
             const nutInfo = nutrient.nutrient_info.slice(1, 6);
 
-            const divideBy = nutInfo.reduce((x, y) => x + y);
             for (let i = 0; i < 5; i++) {
-                summaryNutInfo[i] += nutInfo[i] / divideBy;
+                summaryNutInfo[i] += nutInfo[i];
             }
         }
+
+        const max = Math.max(...summaryNutInfo);
+        summaryNutInfo = summaryNutInfo.map(x => (x / max) * 120);
 
         res.status(200).json({
             status: true,
