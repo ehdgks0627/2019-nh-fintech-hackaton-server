@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
         }
 
         const max = Math.max(...summaryNutInfo);
-        summaryNutInfo = summaryNutInfo.map(x => 120 - (x / max) * 120);
+        summaryNutInfo = summaryNutInfo.map(x => (x / max) * 120);
 
         res.status(200).json({
             status: true,
