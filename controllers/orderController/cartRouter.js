@@ -141,11 +141,11 @@ router.get('/', (req, res) => {
             for (var i = 0; i < products.length; i++) {
                 console.log(products[i]);
                 const product = await Product.findOne({ product_id: products[i]._id }); // , (err, product) => {
+                console.log("products[i]._id = ", products[i]._id);
+                console.log("product = ", product);
                 result.push(product);
-                if (result.length == products.length) {
-                    res.send({ 'status': true, 'data': result });
-                }
             }
+            res.send({ 'status': true, 'data': result });
         });
     });
 });
