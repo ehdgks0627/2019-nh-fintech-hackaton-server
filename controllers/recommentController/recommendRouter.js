@@ -41,23 +41,41 @@ router.get('/', async (req, res) => {
             data: [
                 {
                     status: summaryNutInfo[0],
-                    recommend: await Product.findOne({ product_category: "쌀" })
+                    recommend: [
+                        await Product.findOne({ product_category: "쌀" }),
+                        await Product.findOne({ product_category: "밀가루" })
+                    ]
                 },
                 {
                     status: summaryNutInfo[1],
-                    recommend: await Product.findOne({ product_category: "김" })
+                    recommend: [
+                        await Product.findOne({ product_category: "김" }),
+                        await Product.findOne({ product_category: "달걀" }),
+                        await Product.findOne({ product_category: "콩" })
+                    ]
                 },
                 {
                     status: summaryNutInfo[2],
-                    recommend: await Product.findOne({ product_category: "꿀" })
+                    recommend: [
+                        await Product.findOne({ product_category: "꿀" }),
+                        await Product.findOne({ product_category: "아보카도" })
+                    ]
                 },
                 {
                     status: summaryNutInfo[3],
-                    recommend: await Product.findOne({ product_category: "꿀" })
+                    recommend: [
+                        await Product.findOne({ product_category: "꿀" }),
+                        await Product.findOne({ product_category: "토마토" })
+                    ]
                 },
                 {
                     status: summaryNutInfo[4],
-                    recommend: await Product.findOne({ product_category: "후추" })
+                    recommend: [
+                        await Product.findOne({ product_category: "후추" }),
+                        await Product.findOne({ product_category: "소금" }),
+                        await Product.findOne({ product_category: "고추장" }),
+                        await Product.findOne({ product_category: "김치" })
+                    ]
                 }
             ]
         });
