@@ -103,95 +103,94 @@ var Nutrient = mongoose.model('NutrientSchema', db.NutrientSchema);
 var Order = mongoose.model('OrderSchema', db.OrderSchema);
 
 router.put('/', function (req, res) {
-    if(!"user1"){
-        res.send({'status': false});
+    if (!"user1") {
+        res.send({ 'status': false });
         console.log("no session");
-        return ;
+        return;
     }
 
-    User.findOne({name: "user1"}, (err, user) => {
-        if(!user){ res.send({'status': false}); return; }
+    User.findOne({ name: "user1" }, (err, user) => {
+        if (!user) { res.send({ 'status': false }); return; }
         console.log(user);
-        Cart.update({_id: user.cart_id}, {$push : { product_id : req.body.product_id}}, (err, cart) => {
+        Cart.update({ _id: user.cart_id }, { $push: { product_id: req.body.product_id } }, (err, cart) => {
             console.log(cart);
             console.log(err);
-            if(cart){
-                res.send({'status': true});
-            }else{
-                res.send({'status': false});
+            if (cart) {
+                res.send({ 'status': true });
+            } else {
+                res.send({ 'status': false });
             }
         });
     });
 });
 
 router.get('/', function (req, res) {
-    if(!"user1"){
-        res.send({'status': false});
+    if (!"user1") {
+        res.send({ 'status': false });
         console.log("no session");
-        return ;
+        return;
     }
 
-    User.findOne({name: "user1"}, (err, user) => {
-        if(!user){ res.send({'status': false}); return; }
-        Cart.find({_id: user.cart_id}, (err, cart) => {
-	    console.log(cart);
-	    if(!cart){ res.send({'status':true}); return;}
+    User.findOne({ name: "user1" }, (err, user) => {
+        if (!user) { res.send({ 'status': false }); return; }
+        Cart.find({ _id: user.cart_id }, (err, cart) => {
+            console.log(cart);
+            if (!cart) { res.send({ 'status': true }); return; }
             var products = cart[0].product_id
             var result = []
-            for(var i=0; i<products.length; i++) {
+            for (var i = 0; i < products.length; i++) {
                 console.log(products[i]);
-                Product.findOne({product_id: products[i]._id}, (err, product) => {
-                    result.push(product)
-                    if (result.length == products.length) {
-                        res.send({'status': true, 'data': result});
-                    }
-                })
+                const product = await Product.findOne({ product_id: products[i]._id }); // , (err, product) => {
+                result.push(product);
+                if (result.length == products.length) {
+                    res.send({ 'status': true, 'data': result });
+                }
             }
         });
     });
 });
 
-router.get('/test', function (req, res){
-    Cart.find({name: req.body.name}, (err, cart) => {
+router.get('/test', function (req, res) {
+    Cart.find({ name: req.body.name }, (err, cart) => {
         console.log(cart);
     });
 });
 
 router.delete('/', function (req, res) {
-    if(!"user1"){
-        res.send({'status': false});
+    if (!"user1") {
+        res.send({ 'status': false });
         console.log("no session");
-        return ;
+        return;
     }
 
-    User.findOne({name: "user1"}, (err, user) => {
-        if(!user){ res.send({'status': false}); return; }
+    User.findOne({ name: "user1" }, (err, user) => {
+        if (!user) { res.send({ 'status': false }); return; }
 
-    Cart.find({name: "user1"}, (err, cart) => {
-        Cart.collection.insert({name: "user1"}, (err, new_cart) => {
-            User.update({name: "user1"}, {$set: {cart_id: new_cart.ops[0]._id } }, (err, user) => {
-                cart = cart[0]
-                    Order.collection.insert({state_id: "0", cart_id: cart._id}, (err, order) => {
-                        if(!order) { res.send({'status': false}); return ; }
-			    console.log(order);
-			    User.update({name: "user1"}, {$push : { order_id : order.ops[0]._id.toString()}}, (err, user) => {
-				    const data = contract.methods.changeState(order.ops[0]._id.toString(), 0).encodeABI();
-				    const rawTx = {
-					nonce: web3.eth.getTransactionCount(address, 'pending'),
-					gasPrice: web3.utils.toHex(web3.utils.toWei("12", "gwei")),
-					gasLimit: web3.utils.toHex("210000"),
-					data,
-					from: address,
-					to: contractAddress,
-					value: web3.utils.toHex("0")
-				    };
-				    web3.eth.accounts.signTransaction(rawTx, privateKey).then(signedTransaction => {
-					web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
-					
-				    });
-			});
+        Cart.find({ name: "user1" }, (err, cart) => {
+            Cart.collection.insert({ name: "user1" }, (err, new_cart) => {
+                User.update({ name: "user1" }, { $set: { cart_id: new_cart.ops[0]._id } }, (err, user) => {
+                    cart = cart[0]
+                    Order.collection.insert({ state_id: "0", cart_id: cart._id }, (err, order) => {
+                        if (!order) { res.send({ 'status': false }); return; }
+                        console.log(order);
+                        User.update({ name: "user1" }, { $push: { order_id: order.ops[0]._id.toString() } }, (err, user) => {
+                            const data = contract.methods.changeState(order.ops[0]._id.toString(), 0).encodeABI();
+                            const rawTx = {
+                                nonce: web3.eth.getTransactionCount(address, 'pending'),
+                                gasPrice: web3.utils.toHex(web3.utils.toWei("12", "gwei")),
+                                gasLimit: web3.utils.toHex("210000"),
+                                data,
+                                from: address,
+                                to: contractAddress,
+                                value: web3.utils.toHex("0")
+                            };
+                            web3.eth.accounts.signTransaction(rawTx, privateKey).then(signedTransaction => {
+                                web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
 
-                        res.send({'status': true});
+                            });
+                        });
+
+                        res.send({ 'status': true });
                         return;
                     });
                 });
@@ -202,52 +201,52 @@ router.delete('/', function (req, res) {
 
 const state = {}
 
-router.post('/state', function(req, res) {
-	const data = contract.methods.changeState(req.body.order_id.toString(), parseInt(req.body.state)).encodeABI();
+router.post('/state', function (req, res) {
+    const data = contract.methods.changeState(req.body.order_id.toString(), parseInt(req.body.state)).encodeABI();
 
 
 
-	const rawTx = {
-		nonce: web3.eth.getTransactionCount(address, 'pending'),
-		gasPrice: web3.utils.toHex(web3.utils.toWei("12", "gwei")),
-		gasLimit: web3.utils.toHex("210000"),
-		data,
-		from: address,
-		to: contractAddress,
-		value: web3.utils.toHex("0")
-	};
-	web3.eth.accounts.signTransaction(rawTx, privateKey).then(signedTransaction => {
-		web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
-		Order.updateOne({_id: req.body.order_id}, {state_id: req.body.state}, (err, orders) => {
-			console.log("update",orders);
-			state[req.body.order_id] = req.body.state;
-			res.send({'status': true, 'state': req.body.state});
-		});
+    const rawTx = {
+        nonce: web3.eth.getTransactionCount(address, 'pending'),
+        gasPrice: web3.utils.toHex(web3.utils.toWei("12", "gwei")),
+        gasLimit: web3.utils.toHex("210000"),
+        data,
+        from: address,
+        to: contractAddress,
+        value: web3.utils.toHex("0")
+    };
+    web3.eth.accounts.signTransaction(rawTx, privateKey).then(signedTransaction => {
+        web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
+        Order.updateOne({ _id: req.body.order_id }, { state_id: req.body.state }, (err, orders) => {
+            console.log("update", orders);
+            state[req.body.order_id] = req.body.state;
+            res.send({ 'status': true, 'state': req.body.state });
+        });
 
-	});
+    });
 
 });
 
-router.get('/order', function (req, res){
-    
-    User.findOne({name: "user1"}, (err, user) => {
-	    var orders = user.orders;
-            var result = {};
-	    var state = {};
-            for(var i=0; i<orders.length; i++) {
-                console.log("orders",orders[i]);
-                Orders.findOne({_id: orders[i]}, (err, order) => {
-		    cart_id = order.cart_id;
-		    var products = [];
-			Cart.findOne({_id: cart_id}, (err, cart) => {
-				products.append(cart.data);
-				result[orders[i]] = products;
-			});
-                })
-            }
+router.get('/order', function (req, res) {
+
+    User.findOne({ name: "user1" }, (err, user) => {
+        var orders = user.orders;
+        var result = {};
+        var state = {};
+        for (var i = 0; i < orders.length; i++) {
+            console.log("orders", orders[i]);
+            Orders.findOne({ _id: orders[i] }, (err, order) => {
+                cart_id = order.cart_id;
+                var products = [];
+                Cart.findOne({ _id: cart_id }, (err, cart) => {
+                    products.append(cart.data);
+                    result[orders[i]] = products;
+                });
+            })
+        }
     });
     Order.find({}, (err, orders) => {
-    	res.send(orders);
+        res.send(orders);
     });
 });
 
