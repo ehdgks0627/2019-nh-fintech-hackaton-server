@@ -124,7 +124,7 @@ router.put('/', function (req, res) {
     });
 });
 
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
     if (!"user1") {
         res.send({ 'status': false });
         console.log("no session");
@@ -133,7 +133,7 @@ router.get('/', async (req, res) => {
 
     User.findOne({ name: "user1" }, (err, user) => {
         if (!user) { res.send({ 'status': false }); return; }
-        Cart.find({ _id: user.cart_id }, (err, cart) => {
+        Cart.find({ _id: user.cart_id }, async (err, cart) => {
             console.log(cart);
             if (!cart) { res.send({ 'status': true }); return; }
             var products = cart[0].product_id
