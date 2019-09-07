@@ -140,8 +140,8 @@ router.get('/', (req, res) => {
             var result = []
             for (var i = 0; i < products.length; i++) {
                 console.log(products[i]);
-                const product = await Product.findOne({ product_id: products[i] }); // , (err, product) => {
-                console.log("products[i]._id = ", products[i]._id);
+                const product = await Product.findOne({ _id: products[i] }); // , (err, product) => {
+                console.log("products[i]._id = ", products[i]);
                 console.log("product = ", product);
                 result.push(product);
             }
