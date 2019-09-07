@@ -49,7 +49,7 @@ router.get('/', async (req, res) => {
                 },
                 {
                     status: summaryNutInfo[2],
-                    recommend: await Product.findOne({ product_category: "감자" })
+                    recommend: await Product.findOne({ product_category: "꿀" })
                 },
                 {
                     status: summaryNutInfo[3],
