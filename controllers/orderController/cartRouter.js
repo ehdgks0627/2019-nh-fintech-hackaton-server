@@ -135,12 +135,12 @@ router.get('/', (req, res) => {
         if (!user) { res.send({ 'status': false }); return; }
         Cart.find({ _id: user.cart_id }, async (err, cart) => {
             console.log(cart);
-            if (!cart) { res.send({ 'status': true }); return; }
+            if (!cart) { res.send({ 'status': false }); return; }
             var products = cart[0].product_id
             var result = []
             for (var i = 0; i < products.length; i++) {
                 console.log(products[i]);
-                const product = await Product.findOne({ product_id: products[i]._id }); // , (err, product) => {
+                const product = await Product.findOne({ product_id: products[i] }); // , (err, product) => {
                 console.log("products[i]._id = ", products[i]._id);
                 console.log("product = ", product);
                 result.push(product);
