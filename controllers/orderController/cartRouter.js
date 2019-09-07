@@ -124,7 +124,7 @@ router.put('/', function (req, res) {
     });
 });
 
-router.get('/', function (req, res) {
+router.get('/', async (req, res) => {
     if (!"user1") {
         res.send({ 'status': false });
         console.log("no session");
